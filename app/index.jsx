@@ -1,6 +1,8 @@
-import { React } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from './../actions';
+import * as actions from './actions';
+
+
 
 class TaskForm extends React.Component {
     constructor(props){
@@ -63,13 +65,14 @@ class TaskList extends React.Component{
 
         return (
             <div>
-                phones.map((phone, index) => {
-                    <TaskItem 
-                        key={index}
-                        text={phone}
-                        deleteTask={ deleteTask }
-                    />
-                })
+                {
+                    phones && phones.map((phone) => {
+                        <TaskItem 
+                            text={phone}
+                            deleteTask={ deleteTask }
+                        />
+                    })
+                }
             </div>
         )
     }
