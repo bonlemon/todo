@@ -1,4 +1,5 @@
 import React from 'react';
+import {dispatch} from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './actions';
 
@@ -15,6 +16,8 @@ class TaskForm extends React.Component {
         if ( input.value !== '' ) {
             const task = input.value;
 
+            console.log('TaskForm task', task)
+
             input.value = "";
             
             return this.props.addTask(task);
@@ -30,24 +33,27 @@ class TaskForm extends React.Component {
 }
 
 
-class TaskItem extends React.Component {
+class TaskItem extends React.Component{
     constructor(props){
         super(props);
+
+        console.log('----------')
 
         this.handlerOnClick = this.handlerOnClick.bind(this);
     }
 
     handlerOnClick() {
-        const { task } = this.props;
-
-        this.props.deleteTask(task);
+        const { task, deleteTask } = this.props;
+        
+        deleteTask(task);
     }
     render(){
+        console.log('this.props', this.props)
         return (
             <div>
                 <p>
                     <b>
-                        {this.props.text}
+                        {this.props.task}
                     </b>
                     <button onClick={this.handlerOnClick}>Удалить</button>
                 </p>
@@ -61,16 +67,20 @@ class TaskList extends React.Component{
         super(props);
     }
     render () {
-        const { phones, deleteTask } = this.props;
+        const { tasks, deleteTask } = this.props;
+
+        console.log('TaskList tasks', tasks)
 
         return (
             <div>
                 {
-                    phones && phones.map((phone) => {
-                        <TaskItem 
-                            text={phone}
+                    tasks.map((task) => {
+                        return <TaskItem
+                            key={task}
+                            task={task}
                             deleteTask={ deleteTask }
                         />
+                        {console.log('task', task)}
                     })
                 }
             </div>
@@ -80,11 +90,14 @@ class TaskList extends React.Component{
 
 class AppView extends React.Component {
     render(){
-        const { data, addTask } = this.props;
+        const { tasks, actions } = this.props;
+        
+        console.log('AppView tasks', tasks)
+        
         return (
             <div>
-                <TaskForm addTask={addTask} />
-                <TaskList {...data} /> 
+                <TaskForm addTask={actions.onAddTask} />
+                <TaskList tasks={tasks} deleteTask={actions.onDeleteTask} /> 
             </div>
         )
     }
@@ -92,8 +105,21 @@ class AppView extends React.Component {
 
 function mapStateToProps(state){
     return {
-        phones: state.get("phones")
+        tasks: state.getIn(["tasks"]) ? state.getIn(["tasks"]).toJS() : []
     }
 }
 
-export default connect(mapStateToProps, actions)(AppView);
+function mapDispatchToProps(dispatch){
+    return {
+        actions: {
+            onAddTask: (task) => {
+                return dispatch(actions.addTask(task))
+            },
+            onDeleteTask: (task) => {
+                return dispatch(actions.deleteTask(task))
+            }
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppView);
