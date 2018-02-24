@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Components
-import TaskItem from './task-item.jsx'
+import TaskItem from './../task-item'
 
 // Component
 export default class TaskList extends React.Component{

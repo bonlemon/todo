@@ -14,9 +14,12 @@ module.exports = {
                 exclude: /(node_modules)/,
                 loader: "babel-loader",
                 options: {
-                    presets:["env","react"] // plugins
-                    // presets:["es2015","react"] // plugins
+                    presets:["env", "react"] // plugins
                 }
+            },
+            {
+                test: /\.(s*)css/,
+                use:['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     }

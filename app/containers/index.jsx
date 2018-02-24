@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import * as actions from './../actions';
 
 // Components
-import TaskForm from './../component/task-form.jsx'
-import TaskList from './../component/task-list.jsx'
+import TaskForm from './../component/task-form'
+import TaskList from './../component/task-list'
 
 // Selectors
 import { getTasks } from './../reducers'

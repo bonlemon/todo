@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import reducer from './reducers';
 import AppView from './containers/index.jsx';
 
+import './app.scss'
+
 const store = createStore(reducer); 
 
 ReactDOM.render(
